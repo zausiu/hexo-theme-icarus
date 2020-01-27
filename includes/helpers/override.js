@@ -101,7 +101,7 @@ module.exports = function (hexo) {
      *    }
      * }
      */
-    hexo.extend.helper.register('_toc', (content) => {
+    hexo.extend.helper.register('_toc', (content, chapter_file) => {
         const $ = cheerio.load(content, { decodeEntities: false });
         const toc = {};
         const levels = [0, 0, 0];
@@ -136,11 +136,77 @@ module.exports = function (hexo) {
                 node = node[i];
             }
             node.id = id;
+            if (chapter_file !== undefined)
+                node.href = `${chapter_file}#${id}`
             node.text = text;
             node.index = levels.slice(0, level + 1).join('.');
         });
         return toc;
     });
+
+    function build_book_toc(toc, lvl) {
+        if (lvl > 2)
+            return '';
+
+        if (toc === undefined)
+            return;
+
+        let result = '';
+        if (toc.hasOwnProperty('id') && toc.hasOwnProperty('index') && toc.hasOwnProperty('text')) {
+            if (lvl <= 1) {
+                result += `<li>
+                    <div class='level'>
+                        <div class='level-left'>
+                            <span class="menu_sign">&#x2212</span>
+                            <a class="is-flex" href="${toc.href}">
+                                <span>${toc.text}</span>
+                            </a>
+                        </div>
+                    </div>
+            `;
+            }
+            else
+            {
+                result += `<li>
+                    <a class="is-flex" href="${toc.href}">
+                        <span>${toc.text}</span> 
+                    </a>
+            `;
+            }
+        }
+
+        let keys = Object.keys(toc);
+        keys.indexOf('id') > -1 && keys.splice(keys.indexOf('id'), 1);
+        keys.indexOf('text') > -1 && keys.splice(keys.indexOf('text'), 1);
+        keys.indexOf('index') > -1 && keys.splice(keys.indexOf('index'), 1);
+        keys = keys.map(k => parseInt(k)).sort((a, b) => a - b);
+        if (keys.length > 0) {
+            result += '<ul class="menu-list">';
+            for (let i of keys) {
+                result += build_book_toc(toc[i], lvl + 1);
+            }
+            result += '</ul>';
+        }
+        if (toc.hasOwnProperty('id') && toc.hasOwnProperty('index') && toc.hasOwnProperty('text')) {
+            result += '</li>';
+        }
+
+        return result;
+    }
+
+    hexo.extend.helper.register('_build_book_toc', (book_name, current_chapter_file, chapters) => {
+        const toc_fn = hexo.extend.helper.get('_toc');
+        const book_toc = [];
+        chapters.forEach(chapter => {
+            const chapter_file = chapter.path.split('/')[1];
+            const toc = toc_fn(chapter.content, chapter_file == current_chapter_file ? '' : chapter_file);
+            for (let k in toc) {
+                book_toc.push(toc[k]);
+            }
+        });
+
+        return build_book_toc(book_toc, 0);
+    })
 
     hexo.extend.helper.register('_js', function (url, defer = false, async = false) {
         const urlFor = hexo.extend.helper.get('url_for').bind(this);

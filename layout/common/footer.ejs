@@ -24,10 +24,12 @@
             <div class="level-end">
             <% if (Object.keys(links).length) { %>
                 <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                <label class="label">版权所有，可转载，但必须带上原文链接。</label>
                 <% for (let name in links) {
                         let link = links[name]; %>
                 <p class="control">
-                    <a class="button is-white <%= typeof(link) !== 'string' ? 'is-large' : '' %>" target="_blank" rel="noopener" title="<%= name %>" href="<%= url_for(typeof(link) === 'string' ? link : link.url) %>">
+                    <a class="button is-white <%= typeof(link) !== 'string' ? 'is-large' : '' %>" target="_blank" rel="noopener" 
+                        title="<%= name %>" href="<%= url_for(typeof(link) === 'string' ? link : link.url) %>">
                         <% if (typeof(link) === 'string') { %>
                         <%= name %>
                         <% } else { %>
@@ -37,6 +39,7 @@
                 </p>
                 <% } %>
                 </div>
+
             <% } %>
             </div>
         </div>

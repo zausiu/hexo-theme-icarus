@@ -27,7 +27,8 @@ module.exports = function (hexo) {
 
     hexo.extend.helper.register('has_column', function (position) {
         const getWidgets = hexo.extend.helper.get('get_widgets').bind(this);
-        return getWidgets(position).length > 0;
+        let widgets = getWidgets(position);
+        return widgets.length > 0;
     });
 
     hexo.extend.helper.register('column_count', function () {

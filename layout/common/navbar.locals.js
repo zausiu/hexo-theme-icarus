@@ -6,8 +6,10 @@ module.exports = (ctx, locals) => {
         actives[i] = typeof page.path !== 'undefined' && is_same_link(menus[i], page.path)
     });
     const hasToc = get_config('toc') === true && has_widget('toc') && (page.layout === 'page' || page.layout === 'post');
+    const hasBookToc = get_config('book');
     return Object.assign(locals, {
         hasToc,
+        hasBookToc,
         menus,
         actives,
         title: get_config('title'),

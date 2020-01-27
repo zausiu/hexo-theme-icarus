@@ -1,0 +1,12 @@
+<% let tocContent = _build_book_toc(book_name, current_chapter_file, chapters); if (tocContent !== undefined && tocContent !== ''){ %>
+    <div class="card widget" id="book_toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    <%= _p('widget.catalogue', Infinity) %>
+                </h3>
+                <%- tocContent %>
+            </div>
+        </div>
+    </div>
+<% } %>

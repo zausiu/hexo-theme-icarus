@@ -39,6 +39,10 @@ const DEFAULT_WIDGETS = [
         position: 'left'
     },
     {
+        type: 'book_toc',
+        position: 'left'
+    },
+    {
         type: 'links',
         position: 'left',
         links: {
