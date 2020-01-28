@@ -7,10 +7,10 @@
                     <%= logo.text %>
                 <% } else { %>
                     <img src="<%- url_for(logo) %>" alt="<%= title %>" height="28">
-                <% } %>
+                <% };author='kamuszhou' %>
                 </a>
                 <p class="is-size-7">
-                &copy; <%= date(new Date(), 'YYYY') %> <%= author || title %>&nbsp;
+                &copy; <%= date(new Date(), 'YYYY') %> <%= title %>&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
                         href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 <% if (busuanzi) { %>
@@ -19,12 +19,12 @@
                 <%- _p('plugin.visitor', '<span id="busuanzi_value_site_uv">0</span>') %>
                 </span>
                 <% } %>
+                <span>&nbsp;&nbsp; kamuszhou版权所有，可转载，但必须带上原文链接。</span>
                 </p>
             </div>
             <div class="level-end">
             <% if (Object.keys(links).length) { %>
                 <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
-                <label class="label">版权所有，可转载，但必须带上原文链接。</label>
                 <% for (let name in links) {
                         let link = links[name]; %>
                 <p class="control">
